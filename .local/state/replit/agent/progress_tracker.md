@@ -19,6 +19,7 @@
 [x] 24. Complete final migration - database populated, all models working, app running successfully
 [x] 25. Set up Google Colab training environment and provide training code
 [x] 26. Integrate custom trained model files from Google Colab
+[x] 27. Fix tulsi identification error - updated database to match trained model
 [x] 19. Install required Python packages for custom models (scikit-learn, tensorflow, opencv-python)
 [x] 20. Verify trained models are properly loaded and accessible 
 [x] 21. Enable custom TensorFlow model integration for plant identification

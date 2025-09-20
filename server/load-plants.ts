@@ -51,7 +51,7 @@ function parseCSVLine(line: string): string[] {
 
 export async function loadPlantsFromCSV() {
   try {
-    const csvPath = join(process.cwd(), 'server/data/comprehensive-medicinal-plants.csv');
+    const csvPath = join(process.cwd(), 'server/data/trained-model-plants.csv');
     const csvContent = readFileSync(csvPath, 'utf-8');
     
     const lines = csvContent.split('\n');

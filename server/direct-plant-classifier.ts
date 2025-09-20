@@ -1,6 +1,7 @@
 import { spawn } from 'child_process';
 import path from 'path';
 import fs from 'fs';
+import { COMPREHENSIVE_PLANT_DATABASE, type ComprehensivePlantData } from './comprehensive-plant-data.js';
 
 // Your trained model plant data from training_results.json
 const TRAINED_PLANTS = {
@@ -135,7 +136,7 @@ export class DirectPlantClassifier {
     try {
       // Analyze image filename and content for plant identification
       const selectedPlant = await this.smartPlantIdentification(tempImagePath, imageBase64, fileName);
-      const plantData = TRAINED_PLANTS[selectedPlant];
+      const plantData = TRAINED_PLANTS[selectedPlant as keyof typeof TRAINED_PLANTS];
       
       // Generate realistic confidence based on the model's trained accuracy
       const baseAccuracy = plantData.accuracy;
@@ -155,7 +156,7 @@ export class DirectPlantClassifier {
       try {
         fs.unlinkSync(tempImagePath);
       } catch (e) {
-        console.log('Cleanup warning:', e.message);
+        console.log('Cleanup warning:', (e as Error).message);
       }
     }
   }
@@ -273,35 +274,72 @@ export class DirectPlantClassifier {
 
   private formatPlantResult(classification: any) {
     const plantData = classification.plantData;
+    const comprehensivePlantData = COMPREHENSIVE_PLANT_DATABASE[classification.plantName];
+    
+    // Use comprehensive data if available, otherwise fall back to basic data
+    const plantInfo = comprehensivePlantData || {
+      english_name: plantData.hindi_name,
+      hindi_name: plantData.hindi_name,
+      sanskrit_name: plantData.hindi_name,
+      scientific_name: plantData.scientific_name,
+      family: plantData.family,
+      description_english: `Traditional medicinal plant`,
+      description_hindi: `पारंपरिक औषधीय पौधा`,
+      uses_english: plantData.uses,
+      uses_hindi: `${plantData.hindi_name} के उपयोग`,
+      preparation_english: `Use ${plantData.parts_used} as directed`,
+      preparation_hindi: `निर्देशानुसार ${plantData.parts_used} का उपयोग करें`,
+      parts_used_english: plantData.parts_used,
+      parts_used_hindi: plantData.parts_used,
+      properties_english: plantData.uses,
+      properties_hindi: `चिकित्सीय गुण`,
+      precautions_english: 'Consult healthcare provider before use',
+      precautions_hindi: 'उपयोग से पहले चिकित्सक से सलाह लें',
+      dosage_english: 'As directed by healthcare provider',
+      dosage_hindi: 'चिकित्सक के निर्देशानुसार',
+      therapeutic_actions_english: 'Traditional therapeutic actions',
+      therapeutic_actions_hindi: 'पारंपरिक चिकित्सीय कार्य'
+    };
     
     return {
       plant: {
         id: `plant-${Date.now()}`,
-        name: classification.plantName.charAt(0).toUpperCase() + classification.plantName.slice(1),
-        scientificName: plantData.scientific_name,
+        name: plantInfo.english_name,
+        scientificName: plantInfo.scientific_name,
         confidence: classification.confidence,
-        medicinalUses: plantData.uses.split(', '),
-        safetyWarnings: ['Consult healthcare provider before use'],
+        medicinalUses: plantInfo.uses_english.split(', '),
+        safetyWarnings: [plantInfo.precautions_english],
         region: ['India', 'South Asia'],
-        family: plantData.family,
-        genus: plantData.scientific_name.split(' ')[0],
-        species: plantData.scientific_name.split(' ')[1] || 'sp.',
-        commonNames: [classification.plantName, plantData.hindi_name],
-        careInstructions: `Traditional preparation methods for ${plantData.parts_used}`,
+        family: plantInfo.family,
+        genus: plantInfo.scientific_name.split(' ')[0],
+        species: plantInfo.scientific_name.split(' ')[1] || 'sp.',
+        commonNames: [plantInfo.english_name, plantInfo.hindi_name, plantInfo.sanskrit_name],
+        careInstructions: plantInfo.preparation_english,
         growingConditions: 'Tropical/subtropical climate',
         bloomTime: 'Seasonal',
         toxicity: 'Generally safe when used appropriately',
         rarity: 'Common',
-        hindiName: plantData.hindi_name,
-        sanskritName: plantData.hindi_name, // Use Hindi name as Sanskrit fallback
-        partsUsed: plantData.parts_used,
-        properties: plantData.uses,
-        hindiUses: `${plantData.hindi_name} का उपयोग: ${plantData.uses}`,
-        hindiDescription: `${plantData.hindi_name} एक महत्वपूर्ण आयुर्वेदिक औषधि है`,
-        hindiPreparation: `${plantData.parts_used} का उपयोग करें`,
-        hindiPrecautions: 'चिकित्सक की सलाह लें'
+        description: plantInfo.description_english,
+        uses: plantInfo.uses_english,
+        preparation: plantInfo.preparation_english,
+        partsUsed: plantInfo.parts_used_english,
+        properties: plantInfo.properties_english,
+        precautions: plantInfo.precautions_english,
+        dosage: plantInfo.dosage_english,
+        therapeuticActions: plantInfo.therapeutic_actions_english,
+        // Hindi Information
+        hindiName: plantInfo.hindi_name,
+        sanskritName: plantInfo.sanskrit_name,
+        hindiDescription: plantInfo.description_hindi,
+        hindiUses: plantInfo.uses_hindi,
+        hindiPreparation: plantInfo.preparation_hindi,
+        hindiPartsUsed: plantInfo.parts_used_hindi,
+        hindiProperties: plantInfo.properties_hindi,
+        hindiPrecautions: plantInfo.precautions_hindi,
+        hindiDosage: plantInfo.dosage_hindi,
+        hindiTherapeuticActions: plantInfo.therapeutic_actions_hindi
       },
-      analysis: `Custom AI model identified this as ${classification.plantName} with ${classification.confidence}% confidence using deep learning classification trained on your specific dataset.`,
+      analysis: `Custom AI model identified this as ${plantInfo.english_name} (${plantInfo.hindi_name}) with ${classification.confidence}% confidence using deep learning classification trained on your specific dataset.`,
       healthAnalysis: {
         healthScore: Math.round(classification.confidence * 0.9),
         status: 'healthy' as const,

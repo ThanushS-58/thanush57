@@ -9,8 +9,12 @@ export class CustomPlantClassifier {
   constructor() {
     this.modelPath = path.join(process.cwd(), 'models', 'mediplant_classifier.h5');
     this.classesPath = path.join(process.cwd(), 'models', 'mediplant_classifier_classes.txt');
+    this.plantInfoPath = path.join(process.cwd(), 'models', 'plant_info_trained.json');
     this.tempDir = path.join(process.cwd(), 'temp');
     this.inferenceScript = path.join(process.cwd(), 'inference_script.py');
+    
+    // Load canonical plant mapping
+    this.plantMapping = this.loadPlantMapping();
     
     // Ensure directories exist
     this.ensureDirectories();
@@ -20,6 +24,22 @@ export class CustomPlantClassifier {
   ensureDirectories() {
     if (!fs.existsSync(this.tempDir)) {
       fs.mkdirSync(this.tempDir, { recursive: true });
+    }
+  }
+
+  loadPlantMapping() {
+    try {
+      if (fs.existsSync(this.plantInfoPath)) {
+        const mapping = JSON.parse(fs.readFileSync(this.plantInfoPath, 'utf8'));
+        console.log('✅ Loaded canonical plant mapping with', Object.keys(mapping).length, 'plants');
+        return mapping;
+      } else {
+        console.log('⚠️ Plant mapping file not found, using fallback');
+        return {};
+      }
+    } catch (error) {
+      console.log('⚠️ Error loading plant mapping:', error.message);
+      return {};
     }
   }
 
@@ -103,7 +123,15 @@ export class CustomPlantClassifier {
 
   formatResult(pythonResult) {
     // Convert Python result to MediPlant AI format
-    const plantName = pythonResult.predicted_class;
+    let plantName = pythonResult.predicted_class;
+    
+    // Map prediction index to canonical name if available
+    if (pythonResult.predicted_index !== undefined && this.plantMapping[pythonResult.predicted_index]) {
+      const canonicalName = this.plantMapping[pythonResult.predicted_index].name;
+      console.log(`🎯 Mapping prediction index ${pythonResult.predicted_index} -> ${canonicalName}`);
+      plantName = canonicalName;
+    }
+    
     const confidence = Math.round(pythonResult.confidence * 100);
 
     return {

@@ -130,10 +130,30 @@ const TRAINED_PLANTS = {
 
 export class DirectPlantClassifier {
   private tempDir: string;
+  private plantMapping: any;
+  private plantInfoPath: string;
   
   constructor() {
     this.tempDir = path.join(process.cwd(), 'temp');
+    this.plantInfoPath = path.join(process.cwd(), 'models', 'plant_info_trained.json');
+    this.plantMapping = this.loadPlantMapping();
     this.ensureDirectories();
+  }
+
+  private loadPlantMapping() {
+    try {
+      if (fs.existsSync(this.plantInfoPath)) {
+        const mapping = JSON.parse(fs.readFileSync(this.plantInfoPath, 'utf8'));
+        console.log('✅ Direct classifier loaded canonical plant mapping with', Object.keys(mapping).length, 'plants');
+        return mapping;
+      } else {
+        console.log('⚠️ Plant mapping file not found in direct classifier, using fallback');
+        return {};
+      }
+    } catch (error) {
+      console.log('⚠️ Error loading plant mapping in direct classifier:', (error as Error).message);
+      return {};
+    }
   }
 
   private ensureDirectories() {
@@ -168,6 +188,16 @@ export class DirectPlantClassifier {
       const selectedPlant = await this.smartPlantIdentification(tempImagePath, imageBase64, fileName);
       const plantData = TRAINED_PLANTS[selectedPlant as keyof typeof TRAINED_PLANTS];
       
+      // Ensure we use canonical name from mapping if available
+      let canonicalPlantName = selectedPlant;
+      for (const [index, plantInfo] of Object.entries(this.plantMapping)) {
+        if ((plantInfo as any)?.name === selectedPlant) {
+          console.log(`🎯 Using canonical name from mapping: ${selectedPlant}`);
+          canonicalPlantName = (plantInfo as any).name;
+          break;
+        }
+      }
+
       // Generate realistic confidence based on the model's trained accuracy
       const baseAccuracy = plantData.accuracy;
       const confidence = Math.max(
@@ -176,7 +206,7 @@ export class DirectPlantClassifier {
       );
 
       return {
-        plantName: selectedPlant,
+        plantName: canonicalPlantName,
         confidence: Math.round(confidence),
         plantData: plantData,
         modelType: 'direct_trained_model'

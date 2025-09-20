@@ -1,10 +1,10 @@
-turmeric
-neem
-ginger
-aloe_vera
-tulsi
-ashwagandha
-amla
-mint
-fenugreek
-cinnamon
+0: turmeric (हल्दी) - Curcuma longa
+1: neem (नीम) - Azadirachta indica
+2: ginger (अदरक) - Zingiber officinale
+3: aloe_vera (एलोवेरा) - Aloe barbadensis
+4: tulsi (तुलसी) - Ocimum sanctum
+5: ashwagandha (अश्वगंधा) - Withania somnifera
+6: amla (आंवला) - Emblica officinalis
+7: mint (पुदीना) - Mentha spicata
+8: fenugreek (मेथी) - Trigonella foenum-graecum
+9: cinnamon (दालचीनी) - Cinnamomum verum

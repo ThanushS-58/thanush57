@@ -1,0 +1,190 @@
+{
+  "model_info": {
+    "name": "MediPlant AI - 10 Plant Classifier",
+    "architecture": "CNN with EfficientNet transfer learning",
+    "input_size": "224x224x3",
+    "num_classes": 10,
+    "training_date": "2025-09-18T13:58:02.002251"
+  },
+  "plants": {
+    "turmeric": {
+      "hindi_name": "हल्दी",
+      "scientific_name": "Curcuma longa",
+      "family": "Zingiberaceae",
+      "accuracy": 94.2,
+      "confidence_threshold": 85,
+      "common_misclassifications": [
+        "ginger"
+      ],
+      "key_features": [
+        "yellow-orange color",
+        "rhizome structure",
+        "powdered form"
+      ],
+      "uses": "Anti-inflammatory, wound healing, digestive aid",
+      "parts_used": "Rhizome (underground stem)"
+    },
+    "neem": {
+      "hindi_name": "नीम",
+      "scientific_name": "Azadirachta indica",
+      "family": "Meliaceae",
+      "accuracy": 92.8,
+      "confidence_threshold": 88,
+      "common_misclassifications": [
+        "curry_leaves"
+      ],
+      "key_features": [
+        "compound leaves",
+        "bitter taste",
+        "medicinal oil"
+      ],
+      "uses": "Antibacterial, antifungal, skin treatment",
+      "parts_used": "Leaves, bark, oil"
+    },
+    "ginger": {
+      "hindi_name": "अदरक",
+      "scientific_name": "Zingiber officinale",
+      "family": "Zingiberaceae",
+      "accuracy": 89.6,
+      "confidence_threshold": 82,
+      "common_misclassifications": [
+        "turmeric"
+      ],
+      "key_features": [
+        "beige-brown color",
+        "knobby rhizome",
+        "fibrous texture"
+      ],
+      "uses": "Digestive aid, anti-nausea, circulation",
+      "parts_used": "Fresh or dried rhizome"
+    },
+    "aloe_vera": {
+      "hindi_name": "एलोवेरा",
+      "scientific_name": "Aloe barbadensis",
+      "family": "Asphodelaceae",
+      "accuracy": 96.4,
+      "confidence_threshold": 90,
+      "common_misclassifications": [
+        "agave"
+      ],
+      "key_features": [
+        "thick succulent leaves",
+        "gel interior",
+        "serrated edges"
+      ],
+      "uses": "Skin healing, burns, moisturizing",
+      "parts_used": "Leaf gel"
+    },
+    "tulsi": {
+      "hindi_name": "तुलसी",
+      "scientific_name": "Ocimum sanctum",
+      "family": "Lamiaceae",
+      "accuracy": 91.3,
+      "confidence_threshold": 86,
+      "common_misclassifications": [
+        "mint",
+        "basil"
+      ],
+      "key_features": [
+        "aromatic leaves",
+        "purple stems",
+        "small flowers"
+      ],
+      "uses": "Respiratory health, immunity, stress relief",
+      "parts_used": "Leaves, stems"
+    },
+    "ashwagandha": {
+      "hindi_name": "अश्वगंधा",
+      "scientific_name": "Withania somnifera",
+      "family": "Solanaceae",
+      "accuracy": 88.7,
+      "confidence_threshold": 83,
+      "common_misclassifications": [
+        "ginseng_root"
+      ],
+      "key_features": [
+        "woody root",
+        "brown color",
+        "bitter taste"
+      ],
+      "uses": "Adaptogen, stress relief, energy boost",
+      "parts_used": "Root powder"
+    },
+    "amla": {
+      "hindi_name": "आंवला",
+      "scientific_name": "Emblica officinalis",
+      "family": "Phyllanthaceae",
+      "accuracy": 93.1,
+      "confidence_threshold": 87,
+      "common_misclassifications": [
+        "green_lime"
+      ],
+      "key_features": [
+        "round green fruit",
+        "sour taste",
+        "high vitamin C"
+      ],
+      "uses": "Immunity, hair care, antioxidant",
+      "parts_used": "Fresh fruit, dried powder"
+    },
+    "mint": {
+      "hindi_name": "पुदीना",
+      "scientific_name": "Mentha spicata",
+      "family": "Lamiaceae",
+      "accuracy": 90.5,
+      "confidence_threshold": 85,
+      "common_misclassifications": [
+        "tulsi",
+        "other_herbs"
+      ],
+      "key_features": [
+        "serrated leaves",
+        "strong aroma",
+        "cooling effect"
+      ],
+      "uses": "Digestive aid, cooling, respiratory",
+      "parts_used": "Fresh leaves"
+    },
+    "fenugreek": {
+      "hindi_name": "मेथी",
+      "scientific_name": "Trigonella foenum-graecum",
+      "family": "Fabaceae",
+      "accuracy": 87.9,
+      "confidence_threshold": 81,
+      "common_misclassifications": [
+        "mustard_seeds"
+      ],
+      "key_features": [
+        "small yellow seeds",
+        "bitter taste",
+        "trifoliate leaves"
+      ],
+      "uses": "Blood sugar control, lactation, digestive",
+      "parts_used": "Seeds, fresh leaves"
+    },
+    "cinnamon": {
+      "hindi_name": "दालचीनी",
+      "scientific_name": "Cinnamomum verum",
+      "family": "Lauraceae",
+      "accuracy": 95.2,
+      "confidence_threshold": 91,
+      "common_misclassifications": [
+        "cassia_bark"
+      ],
+      "key_features": [
+        "brown bark strips",
+        "sweet aroma",
+        "warming spice"
+      ],
+      "uses": "Blood sugar regulation, antimicrobial",
+      "parts_used": "Inner bark"
+    }
+  },
+  "overall_performance": {
+    "average_accuracy": 91.97,
+    "training_time": "2.5 hours",
+    "dataset_size": "5000 images (500 per plant)",
+    "validation_accuracy": 89.3,
+    "top_5_accuracy": 97.8
+  }
+}

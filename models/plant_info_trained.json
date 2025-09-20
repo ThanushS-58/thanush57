@@ -1,0 +1,52 @@
+{
+  "0": {
+    "name": "turmeric",
+    "hindi": "हल्दी",
+    "scientific": "Curcuma longa"
+  },
+  "1": {
+    "name": "neem",
+    "hindi": "नीम",
+    "scientific": "Azadirachta indica"
+  },
+  "2": {
+    "name": "ginger",
+    "hindi": "अदरक",
+    "scientific": "Zingiber officinale"
+  },
+  "3": {
+    "name": "aloe_vera",
+    "hindi": "एलोवेरा",
+    "scientific": "Aloe barbadensis"
+  },
+  "4": {
+    "name": "tulsi",
+    "hindi": "तुलसी",
+    "scientific": "Ocimum sanctum"
+  },
+  "5": {
+    "name": "ashwagandha",
+    "hindi": "अश्वगंधा",
+    "scientific": "Withania somnifera"
+  },
+  "6": {
+    "name": "amla",
+    "hindi": "आंवला",
+    "scientific": "Emblica officinalis"
+  },
+  "7": {
+    "name": "mint",
+    "hindi": "पुदीना",
+    "scientific": "Mentha spicata"
+  },
+  "8": {
+    "name": "fenugreek",
+    "hindi": "मेथी",
+    "scientific": "Trigonella foenum-graecum"
+  },
+  "9": {
+    "name": "cinnamon",
+    "hindi": "दालचीनी",
+    "scientific": "Cinnamomum verum"
+  }
+}

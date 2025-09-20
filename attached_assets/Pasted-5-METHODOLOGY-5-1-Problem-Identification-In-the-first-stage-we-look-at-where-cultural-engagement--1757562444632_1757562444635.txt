@@ -1,0 +1,19 @@
+5.METHODOLOGY
+5.1 Problem Identification
+In the first stage, we look at where cultural engagement and heritage preservation are falling short. To do this, we work closely with users, historians, and educators to figure out what’s missing. Based on these insights, we set the project’s direction choosing which region to highlight, what cultural aspects to cover, and which interactive formats will make the experience most engaging.
+5.2 User-Centred Design and Requirements Gathering
+This phase aims to comprehend user preferences and patterns of engagement. Surveys, interviews, and workshops are conducted with potential users to gather requirements. Functional needs, such as AI personalization and AR integration, as well as non-functional needs including usability and accessibility, are specified.
+5.3 Technology Selection and Integration
+Appropriate artificial intelligence, natural language processing, augmented reality, and multimedia technologies are selected and integrated. AI models for storytelling, content recommendation, and personalization are evaluated. AR and interactive visualization tools are incorporated to deliver immersive user experiences.
+5.4 Prototype Development
+A working platform prototype is developed encompassing AI-driven storytelling, interactive quizzes, and community hubs. The user interface and experience are designed to be immersive, multilingual, and accessible, facilitating seamless interaction.
+5.5 Testing and Validation
+Lab-based testing is performed to assess AI model accuracy, system response times, and content relevance. User trials are conducted to collect both qualitative and quantitative feedback on engagement and usability.
+5.6 Iterative Refinement
+Platform improvements are guided by analysis of user interaction and engagement data. Content, AI models, the UI/UX design, and interactive features are refined iteratively to enhance user satisfaction and platform effectiveness.
+5.7 Field Trials and Real-World Evaluation
+The platform is deployed in real-world settings such as educational institutions, cultural centre’s, and heritage sites. User engagement is monitored, and feedback is collected to evaluate long-term applicability and impact.
+5.8 Ethical and Regulatory Considerations
+Responsible AI use and data handling are prioritized by addressing privacy, security, and obtaining informed user consent. The platform complies with relevant regulations and establishes guidelines for ethical cultural data usage.
+5.9 Dissemination and Implementation
+Results and findings are disseminated through peer-reviewed publications and conference presentations. Collaborations with cultural institutions and technology partners are established. Training is provided to educators and users to facilitate widespread adoption.

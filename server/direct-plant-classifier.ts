@@ -2,6 +2,36 @@ import { spawn } from 'child_process';
 import path from 'path';
 import fs from 'fs';
 import { COMPREHENSIVE_PLANT_DATABASE, type ComprehensivePlantData } from './comprehensive-plant-data.js';
+import Papa from 'papaparse';
+
+// Load dedicated tulsi CSV data
+function loadTulsiCSVData(): ComprehensivePlantData | null {
+  try {
+    const csvPath = path.join(process.cwd(), 'tulsi_data.csv');
+    if (!fs.existsSync(csvPath)) {
+      console.log('Tulsi CSV file not found:', csvPath);
+      return null;
+    }
+    
+    const csvContent = fs.readFileSync(csvPath, 'utf8');
+    const parsed = Papa.parse(csvContent, { 
+      header: true, 
+      skipEmptyLines: true 
+    });
+    
+    if (parsed.errors.length > 0) {
+      console.log('CSV parsing errors:', parsed.errors);
+      return null;
+    }
+    
+    const tulsiData = parsed.data[0] as any;
+    console.log('✅ Loaded tulsi data from CSV:', tulsiData.english_name);
+    return tulsiData as ComprehensivePlantData;
+  } catch (error) {
+    console.log('Error loading tulsi CSV:', error);
+    return null;
+  }
+}
 
 // Your trained model plant data from training_results.json
 const TRAINED_PLANTS = {
@@ -322,6 +352,54 @@ export class DirectPlantClassifier {
 
   private formatPlantResult(classification: any) {
     const plantData = classification.plantData;
+    
+    // PRIORITY: Use dedicated tulsi CSV data if formatting tulsi results
+    if (classification.plantName === 'tulsi') {
+      const tulsiCSVData = loadTulsiCSVData();
+      if (tulsiCSVData) {
+        console.log(`🎯 Using tulsi CSV data for formatting results`);
+        const plantInfo = tulsiCSVData;
+        
+        return {
+          plant: {
+            id: `plant-${Date.now()}`,
+            name: plantInfo.english_name,
+            scientificName: plantInfo.scientific_name,
+            confidence: classification.confidence,
+            medicinalUses: plantInfo.uses_english.split(', '),
+            safetyWarnings: [plantInfo.precautions_english],
+            region: ['India', 'South Asia'],
+            family: plantInfo.family,
+            genus: plantInfo.scientific_name.split(' ')[0],
+            species: plantInfo.scientific_name.split(' ')[1] || 'sp.',
+            commonNames: [plantInfo.english_name, plantInfo.hindi_name],
+            description: plantInfo.description_english,
+            hindiDescription: plantInfo.description_hindi,
+            hindiName: plantInfo.hindi_name,
+            sanskritName: plantInfo.sanskrit_name,
+            uses: plantInfo.uses_english,
+            hindiUses: plantInfo.uses_hindi,
+            preparation: plantInfo.preparation_english,
+            hindiPreparation: plantInfo.preparation_hindi,
+            partsUsed: plantInfo.parts_used_english,
+            hindiPartsUsed: plantInfo.parts_used_hindi,
+            properties: plantInfo.properties_english,
+            hindiProperties: plantInfo.properties_hindi,
+            precautions: plantInfo.precautions_english,
+            hindiPrecautions: plantInfo.precautions_hindi,
+            dosage: plantInfo.dosage_english,
+            hindiDosage: plantInfo.dosage_hindi,
+            therapeuticActions: plantInfo.therapeutic_actions_english,
+            hindiTherapeuticActions: plantInfo.therapeutic_actions_hindi
+          },
+          source: "Custom Model",
+          confidence: classification.confidence,
+          modelUsed: classification.modelType,
+          timestamp: new Date().toISOString()
+        };
+      }
+    }
+    
     const comprehensivePlantData = COMPREHENSIVE_PLANT_DATABASE[classification.plantName];
     
     // Use comprehensive data if available, otherwise fall back to basic data
